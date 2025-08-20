@@ -48,7 +48,8 @@ class Movie(db.Model):
                 'title' : self.title,
                 'poster_url' : self.poster_url,
                 'imdb_rating' : self.imdb_rating if self.imdb_rating else 'N/A',
-        }
+                'type' : 'movie'
+        }  
 
     def __repr__(self):
         return f'Movie {self.title}'
@@ -75,9 +76,10 @@ class TVShow(db.Model):
             'title' : self.title,
             'poster_url' : self.poster_url,
             'imdb_rating' : self.imdb_rating if self.imdb_rating else 'N/A',
-            'vote_count' : self.vote_count
+            'vote_count' : self.vote_count,
+            'type' : 'tvshow' 
         }
-
+    
 
 
     def __repr__(self):
@@ -93,7 +95,7 @@ class WatchHistory(db.Model):
     movie_id = db.Column(db.Integer,db.ForeignKey('movie.id'),nullable = True)
     tv_show_id = db.Column(db.Integer(),db.ForeignKey('tv_show.id'),nullable = True)
     watched_at = db.Column(db.DateTime,default = datetime.utcnow)
-    rating = db.Column(db.Float())
+    rating = db.Column(db.Float()) 
 
 
     def __repr__(self):
@@ -101,10 +103,10 @@ class WatchHistory(db.Model):
     
     def validate(self):
         if (self.movie_id is None and self.tv_show_id is None) or (self.movie_id is not None and self.tv_show_id is not None):
-            raise ValueError("Either movie_id or tv_show_id must be set,but not both")
+            raise ValueError("Either movie_id or tv_show_id must be set,but not both") 
         
     def __init__(self,**kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs) 
         self.validate()    
 
 
